@@ -101,7 +101,6 @@ const DojoForm: FC<DojoForm> = ({ inputs, sendForm }) => {
         const isValidClass = validations[id] ? "valid" : "invalid";
         const inputClass = useFullWidth ? "full-width" : "half-width";
 
-        console.log(`${isValidClass} ${inputClass}`);
         return (
           <div className="form-example" key={id}>
             <label htmlFor={label} style={{ marginRight: 4 }}>
@@ -141,7 +140,7 @@ function App() {
       <DojoForm
         inputs={mock}
         sendForm={(values) => {
-          console.log({ values });
+          // console.log({ values });
         }}
       />
     </>
@@ -158,6 +157,17 @@ const mock: Input[] = [
     useFullWidth: false,
     validations: {
       regexValidation: `\\ba{1,3}\\b`,
+    },
+  },
+  {
+    id: "apellido",
+    label: "Apellido",
+    placeholder: "Your surname",
+    type: InputType.STRING,
+    isRequired: true,
+    useFullWidth: false,
+    validations: {
+      correlative: ["nombre"],
     },
   },
   {
