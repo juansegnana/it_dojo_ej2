@@ -51,14 +51,18 @@ const DojoForm: FC<DojoForm> = ({ inputs, sendForm }) => {
     const input = inputs.find((input) => input.id === id);
     if (input) {
       const formValidations: boolean[] = [];
-      const { validations, isRequired } = input;
-      const { regexValidation } = validations;
+      const { validations: inputValidation, isRequired } = input;
+      const { regexValidation, correlative } = inputValidation;
       if (isRequired && (!value || !value.trim().length)) {
         formValidations.push(false);
       }
       if (regexValidation) {
         const regex = new RegExp(regexValidation);
         formValidations.push(regex.test(value));
+      }
+
+      if (correlative?.length && correlative?.some((id) => !validations[id])) {
+        formValidations.push(false);
       }
 
       const isValid = formValidations.every((itemValid) => itemValid);
