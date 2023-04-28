@@ -53,16 +53,23 @@ const DojoForm: FC<DojoForm> = ({ inputs, sendForm }) => {
       const formValidations: boolean[] = [];
       const { validations: inputValidation, isRequired } = input;
       const { regexValidation, correlative } = inputValidation;
-      if (isRequired && (!value || !value.trim().length)) {
-        formValidations.push(false);
-      }
-      if (regexValidation) {
-        const regex = new RegExp(regexValidation);
-        formValidations.push(regex.test(value));
-      }
+      if (isRequired) {
+        if (!value || !value.trim().length) {
+          formValidations.push(false);
+        }
+        if (regexValidation) {
+          const regex = new RegExp(regexValidation);
+          formValidations.push(regex.test(value));
+        }
 
-      if (correlative?.length && correlative?.some((id) => !validations[id])) {
-        formValidations.push(false);
+        if (
+          correlative?.length &&
+          correlative?.some((id) => {
+            return !validations[id];
+          })
+        ) {
+          formValidations.push(false);
+        }
       }
 
       const isValid = formValidations.every((itemValid) => itemValid);
@@ -153,7 +160,7 @@ const mock: Input[] = [
     label: "Nombre",
     placeholder: "Your name",
     type: InputType.STRING,
-    isRequired: true,
+    isRequired: false,
     useFullWidth: false,
     validations: {
       regexValidation: `\\ba{1,3}\\b`,
